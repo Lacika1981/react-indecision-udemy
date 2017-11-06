@@ -1,15 +1,56 @@
 class IndecisionApp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.removeAllOption = this.removeAllOption.bind(this);// this is the right and efficient solution as it is not bound at every each render
+        this.handlePick = this.handlePick.bind(this);
+        this.handleAddOption = this.handleAddOption.bind(this);
+        this.state = {
+            options: []
+        }
+    }
+
+    removeAllOption() {
+        this.setState(() => {
+            return {
+                options: []
+            }
+        })
+    }
+
+    handlePick() {
+        const randomNum = Math.floor(Math.random() * this.state.options.length);
+        const option = this.state.options[randomNum];
+        alert(option);
+    }
+
+    handleAddOption(option) {
+        if (!option) {
+            return 'Enter valid value to add item'
+        }
+        else if (this.state.options.includes(option)) {
+            return 'This option is already added to the list'
+        }
+        this.setState((prevState) => {
+            return {
+                options: prevState.options.concat(option)
+            }
+        })
+    }
+
     render() {
         const title = 'Indecision';
         const subTitle = 'Put your life in hands of a computer';
-        const options = ['Thing one', 'Thing two', 'Thing four'];
 
         return (
             <div>
                 <Header title={title} subTitle={subTitle} />
-                <Action />
-                <Options options={options} />
-                <AddOption />
+                <Action
+                    hasOptions={this.state.options.length > 0}
+                    handlePick={this.handlePick} />
+                <Options
+                    options={this.state.options}
+                    removeAllOption={this.removeAllOption} />
+                <AddOption handleAddOption={this.handleAddOption} />
             </div>
         );
     }
@@ -30,32 +71,30 @@ class Header extends React.Component {
 }
 
 class Action extends React.Component {
-    handlePick() { /* setting up a method here instead of the global scope */
-        alert('hclicked');
-    }
+
     render() {
         return (
             <div>
-                <button onClick={this.handlePick}>What should I do</button>
+                <button
+                    onClick={this.props.handlePick}
+                    disabled={!this.props.hasOptions} //if it is false the button is disabled
+                >
+                    What should I do
+                </button>
             </div>
         );
     }
 }
 
 class Options extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.handleRemoveAll = this.handleRemoveAll.bind(this); // this is the right and efficient solution as it is not bound at every each render
-    }
-    handleRemoveAll() {
-        alert('handleRemoveAll');
-        console.log(this.props.options);
     }
     render() {
         return (
             <div>
                 {/*<button onClick={this.handleRemoveAll.bind(this)}>Remove All</button>  handleRemoveAll method must be bound to 'this' explicitly in order to use this.props on this method -> expensive solution */}
-                <button onClick={this.handleRemoveAll}>Remove All</button>
+                <button onClick={this.props.removeAllOption}>Remove All</button>
                 {
                     /* this.props.options.map(option => <p key={option}>{option}</p>) */
                     this.props.options.map(option => <Option key={option} optionText={option} />) //rendering a new instances of Option and have access to data via optionText(it can be named anything)
@@ -76,16 +115,29 @@ class Option extends React.Component {
 }
 
 class AddOption extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleAddOption = this.handleAddOption.bind(this);
+        this.state = {
+            error: undefined
+        }
+    }
     handleAddOption(e) {
         e.preventDefault(); // prevent page to refresh only
         const option = e.target.elements.option.value.trim(); //the trim() method removes whitespace from both ends of a string
-        if(option){
-            alert(option);
-        }
+        const error = this.props.handleAddOption(option);
+        this.setState(() => {
+            return {
+                error
+            };
+        });
     }
-    render() {
+
+    
+    render() { 
         return (
             <div>
+            {this.state.error && <p>{this.state.error}</p>}
                 <form onSubmit={this.handleAddOption}>
                     <input type="text" name="option" />
                     <button>Add option</button>
