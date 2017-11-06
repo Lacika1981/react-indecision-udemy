@@ -1,25 +1,48 @@
 class Counter extends React.Component {
-    constructor(props) { //constructor needed to be able to bind 'this' to each method
+    constructor(props) { //constructor needs to be able to bind 'this' to each method
         super(props);
         this.handleAddOne = this.handleAddOne.bind(this);
         this.handleMinusOne = this.handleMinusOne.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.state = { // all the changing data is stored in 'state' object
+            count: 0
+        }
     }
     handleAddOne() {
-        console.log('addedOne');
+        this.setState((prevState) => { //prevState is an object with the previos value
+            return {
+                count: prevState.count + 1
+            };
+        });
     }
 
     handleMinusOne() {
-        console.log('deducted one');
+        this.setState((prevState) => {
+            return {
+                count: prevState.count - 1
+            };
+        });
     }
 
     handleReset() {
-        console.log('reset');
+        this.setState(() => { //passing a function to this.setState is the right way to do
+            return {
+                count: 0
+            };
+        });
+        /* //passing an object is not good method
+        this.setState({
+            count: 0
+        });
+        this.setState({
+            count: this.state.count + 1 //it will add 1 to the current value without resetting the value to 0
+        }); */
     }
+
     render() {
         return (
             <div>
-                <h1>Count: </h1>
+                <h1>Count: {this.state.count} </h1>
                 <button onClick={this.handleAddOne}>+1</button>
                 <button onClick={this.handleMinusOne}>-1</button>
                 <button onClick={this.handleReset}>Reset</button>
