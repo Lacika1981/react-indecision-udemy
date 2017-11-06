@@ -1,7 +1,3 @@
-//stateless functional component
-
-
-
 class IndecisionApp extends React.Component {
     constructor(props) {
         super(props);
