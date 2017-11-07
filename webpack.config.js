@@ -15,5 +15,10 @@ module.exports = {
          exclude: /node_modules/
       }]
    },
-   devtool: 'cheap-module-eval-source-map'
+   devtool: 'cheap-module-eval-source-map',
+   devServer: {
+       contentBase: path.join(__dirname, 'public')
+   }
 };
+
+//install webpack-dev-server sudo yarn add webpack-dev-server@2.5.1
