@@ -3,10 +3,12 @@ import AddOption from './AddOption';
 import Header from './Header';
 import Action from './Action';
 import Options from './Options';
+import OptionModal from './OptionModal';
 
 export default class IndecisionApp extends React.Component {
     state = {
-        options: []
+        options: [],
+        selectedOption: undefined
     };
 
     handleDeleteOptions = () => {
@@ -50,6 +52,8 @@ export default class IndecisionApp extends React.Component {
                     handleDeleteOptions={this.handleDeleteOptions}
                     handleDeleteOption={this.handleDeleteOption} />
                 <AddOption handleAddOption={this.handleAddOption} />
+                <OptionModal
+                selectedOption={this.state.selectedOption} />
             </div>
         );
     }
@@ -78,6 +82,8 @@ export default class IndecisionApp extends React.Component {
     componentWillUnmount(){
         console.log('componentWillUmount'); //runs only if the whole page renders
     }
+
+
 
     
 }
