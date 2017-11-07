@@ -25,7 +25,7 @@ export default class IndecisionApp extends React.Component {
     handlePick = () => {
         const randomNum = Math.floor(Math.random() * this.state.options.length);
         const option = this.state.options[randomNum];
-        this.setState( () => ({selectedOption: option}));
+        this.setState(() => ({ selectedOption: option }));
     }
 
     handleAddOption = (option) => {
@@ -39,7 +39,7 @@ export default class IndecisionApp extends React.Component {
     }
 
     handleRemoveModal = () => {
-        this.setState( () => ({
+        this.setState(() => ({
             selectedOption: undefined
         }))
     }
@@ -50,17 +50,19 @@ export default class IndecisionApp extends React.Component {
         return (
             <div>
                 <Header subTitle={subTitle} />
-                <Action
-                    hasOptions={this.state.options.length > 0}
-                    handlePick={this.handlePick} />
-                <Options
-                    options={this.state.options}
-                    handleDeleteOptions={this.handleDeleteOptions}
-                    handleDeleteOption={this.handleDeleteOption} />
-                <AddOption handleAddOption={this.handleAddOption} />
+                <div className="container">
+                    <Action
+                        hasOptions={this.state.options.length > 0}
+                        handlePick={this.handlePick} />
+                    <Options
+                        options={this.state.options}
+                        handleDeleteOptions={this.handleDeleteOptions}
+                        handleDeleteOption={this.handleDeleteOption} />
+                    <AddOption handleAddOption={this.handleAddOption} />
+                </div>
                 <OptionModal
-                selectedOption={this.state.selectedOption}
-                handleRemoveModal={this.handleRemoveModal} />
+                    selectedOption={this.state.selectedOption}
+                    handleRemoveModal={this.handleRemoveModal} />
             </div>
         );
     }
@@ -69,7 +71,7 @@ export default class IndecisionApp extends React.Component {
         try {
             const json = localStorage.getItem('options');
             const options = JSON.parse(json);
-    
+
             if (options) {
                 this.setState(() => ({ options }));
             }
@@ -86,11 +88,11 @@ export default class IndecisionApp extends React.Component {
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         console.log('componentWillUmount'); //runs only if the whole page renders
     }
 
 
 
-    
+
 }

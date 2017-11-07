@@ -15,7 +15,7 @@ module.exports = {
          exclude: /node_modules/
       },
       {
-          test: /\.scss$/,
+          test: /\.s?css$/, //RegExp to find css and scss files
           use: [
               'style-loader',
               'css-loader',
